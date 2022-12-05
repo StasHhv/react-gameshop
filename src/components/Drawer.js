@@ -9,12 +9,12 @@ function Drawer({onClose, onRemove, items = []}) {
   const  [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const  [orderId, setOrderId] = React.useState(null);
   const totalPrice  = cartItems.reduce((sum, obj) => obj.price + sum, 0)
-
+  const [value, setValue] = React.useState('');
 
   const onClickOrder = async () => {
     try {
     const {data} = await axios.post('https://636c2fe6ad62451f9fc53f91.mockapi.io/orders', {
-      items: cartItems
+      items: cartItems, email: value
   });
       setOrderId(data.id);
       setIsOrderComplete(true);
@@ -52,6 +52,8 @@ function Drawer({onClose, onRemove, items = []}) {
                   </div>
                 ))
               }
+            <span>Ваш email:</span>
+            <input value={value} onChange={event => setValue(event.target.value)} className="email" type="email"/>
             </div>
 
             <div className="cartTotalBlock">
