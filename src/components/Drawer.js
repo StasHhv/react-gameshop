@@ -9,13 +9,14 @@ function Drawer({onClose, onRemove, items = []}) {
   const  [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const  [orderId, setOrderId] = React.useState(null);
   const totalPrice  = cartItems.reduce((sum, obj) => obj.price + sum, 0)
+
   const [value, setValue] = React.useState('');
 
   const onClickOrder = async () => {
     try {
-    const {data} = await axios.post('https://636c2fe6ad62451f9fc53f91.mockapi.io/orders', {
-      items: cartItems, email: value
-  });
+      const {data} = await axios.post('https://636c2fe6ad62451f9fc53f91.mockapi.io/orders', {
+        items: cartItems, email: value
+      });
       setOrderId(data.id);
       setIsOrderComplete(true);
       setCartItems([]);
@@ -38,7 +39,7 @@ function Drawer({onClose, onRemove, items = []}) {
 
         {items.length > 0 ? (
           <div className="d-flex flex-column flex">
-          <div className="items">
+            <div className="items">
               {
                 items.map((obj) => (
                   <div key={obj.id} className="mb-3 cartItem align-items-center">
@@ -52,8 +53,8 @@ function Drawer({onClose, onRemove, items = []}) {
                   </div>
                 ))
               }
-            <span>Ваш email:</span>
-            <input value={value} onChange={event => setValue(event.target.value)} className="email" type="email"/>
+              <span>Ваш email:</span>
+              <input value={value} onChange={event => setValue(event.target.value)} className="email" type="email"/>
             </div>
 
             <div className="cartTotalBlock">
@@ -67,12 +68,12 @@ function Drawer({onClose, onRemove, items = []}) {
               <button onClick={onClickOrder} className="greenButton">Оформити замовлення<img src="/img/arrow.svg" alt="arrow"/></button>
             </div>
           </div>
-          ): (<Info title={isOrderComplete ? "Замовлення оформлено!" : "Кошик пустий"}
-                    description={isOrderComplete ? `Ваше замовлення №${orderId} скоро надійде вам на електронну пошту`:"Добавте хоча б одну гру, щоб зробити замовлення"}
-                    image={isOrderComplete ? "/img/complete-order.jpg":"/img/empty-cart.jpg"}/>)}
+        ): (<Info title={isOrderComplete ? "Замовлення оформлено!" : "Кошик пустий"}
+                  description={isOrderComplete ? `Ваше замовлення №${orderId} скоро надійде вам на електронну пошту`:"Добавте хоча б одну гру, щоб зробити замовлення"}
+                  image={isOrderComplete ? "/img/complete-order.jpg":"/img/empty-cart.jpg"}/>)}
 
-          </div>
-        }
+      </div>
+      }
 
 
 

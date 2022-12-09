@@ -24,22 +24,39 @@ function App() {
       const itemsResponse = await axios.get('https://636c2fe6ad62451f9fc53f91.mockapi.io/items');
 
 
-     setCartItems(cartResponse.data);
-     setFavorites(favoritesResponse.data);
-     setItems(itemsResponse.data);
+      setCartItems(cartResponse.data);
+      setFavorites(favoritesResponse.data);
+      setItems(itemsResponse.data);
     }
     fetchData()
   }, []);
 
-  const onAddToCart = (obj) => {
-    if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-      axios.delete(`https://636c2fe6ad62451f9fc53f91.mockapi.io/cart/${obj.id}`);
-      setCartItems(prev => prev.filter((item) => Number(item.id) !== Number(obj.id)));
-    } else {
-      axios.post('https://636c2fe6ad62451f9fc53f91.mockapi.io/cart', obj);
-      setCartItems((prev) =>[...prev, obj]);
+  const onAddToCart = async (obj) => {
+    try {
+      const findItem = cartItems.find((item) => Number(item.parentId) === Number(obj.id));
+      if (findItem) {
+        setCartItems((prev) => prev.filter((item) => Number(item.parentId) !== Number(obj.id)));
+        await axios.delete(`https://636c2fe6ad62451f9fc53f91.mockapi.io/cart/${findItem.id}`);
+      } else {
+        setCartItems((prev) => [...prev, obj]);
+        const { data } = await axios.post('https://636c2fe6ad62451f9fc53f91.mockapi.io/cart/', obj);
+        setCartItems((prev) =>
+          prev.map((item) => {
+            if (item.parentId === data.parentId) {
+              return {
+                ...item,
+                id: data.id,
+              };
+            }
+            return item;
+          }),
+        );
+      }
+    } catch (error) {
+      alert('Ошибка при добавлении в корзину');
+      console.error(error);
     }
-  }
+  };
 
   const onAddToFavorite = async (obj) => {
     try {
@@ -49,15 +66,15 @@ function App() {
       } else {
         const {data} = await axios.post('https://636c2fe6ad62451f9fc53f91.mockapi.io/favorites', obj);
         setFavorites((prev) =>[...prev, data]);
-    }}
-      catch(error) {
-        alert('Не вдалось додати');
-      }
-   }
+      }}
+    catch(error) {
+      alert('Не вдалось додати');
+    }
+  }
 
   const onRemoveItem = (id) => {
     axios.delete(`https://636c2fe6ad62451f9fc53f91.mockapi.io/cart/${id}`);
-  setCartItems((prev) => prev.filter(item => item.id !== id ));
+    setCartItems((prev) => prev.filter(item => item.id !== id ));
   }
 
   const onChangeSearchInput = (event) => {
@@ -70,33 +87,32 @@ function App() {
 
   return (
     <AppContext.Provider value={{items, cartItems, favorites, isItemAdded, onAddToFavorite, setCartOpened, onAddToCart , setCartItems}}>
-    <div className="wrapper">
-      {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened (false)} onRemove={onRemoveItem}/> }
-      <Header onClickCart={() => setCartOpened (true)}  />
+      <div className="wrapper">
+        {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened (false)} onRemove={onRemoveItem}/> }
+        <Header onClickCart={() => setCartOpened (true)}  />
 
-      <Routes>
-        <Route path="/" element={<Home
-          items={items}
-          cartItems={cartItems}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          onChangeSearchInput={onChangeSearchInput}
-          onAddToFavorite={onAddToFavorite}
-          onAddToCart={onAddToCart} />}
-        />
-        <Route path="/favorites" element={
-          <Favorites/>}
-        />
-        <Route path="/orders" element={
-          <Orders />}
-        />
+        <Routes>
+          <Route path="/" element={<Home
+            items={items}
+            cartItems={cartItems}
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            onChangeSearchInput={onChangeSearchInput}
+            onAddToFavorite={onAddToFavorite}
+            onAddToCart={onAddToCart} />}
+          />
+          <Route path="/favorites" element={
+            <Favorites/>}
+          />
+          <Route path="/orders" element={
+            <Orders />}
+          />
         </Routes>
 
 
-    </div>
+      </div>
     </AppContext.Provider>
   );
 }
 
 export default App;
-
