@@ -25,7 +25,7 @@ function CardItemComponent({id, name, imgurl, price, onPlus, onFavorite, favorit
       <div className={styles.card} >
         <Card>
           <div className={styles.favorite}  onClick={onClickFavorite}>
-            {onFavorite && (<img width={60} src={isFavorite ? "/img/liked.svg" : "img/unliked.svg"} alt="Unliked"/>)}
+            {onFavorite && (<img width={60} src={isFavorite ? "img/liked.svg" : "img/unliked.svg"} alt="Unliked"/>)}
           </div>
           <Card.Img variant="top" src={imgurl}/>
           <Card.Body>
@@ -37,7 +37,7 @@ function CardItemComponent({id, name, imgurl, price, onPlus, onFavorite, favorit
             </Card.Text>
             {onPlus && ( <img className={styles.plus}
                               onClick={onClickPlus} width={60} height={60}
-                              src={isItemAdded(name) ? "/img/btn-checked.svg" : "/img/btn-plus.svg"} alt="Plus"/>)}
+                              src={isItemAdded(name) ? "img/btn-checked.svg" : "img/btn-plus.svg"} alt="Plus"/>)}
           </Card.Body>
         </Card>
       </div>

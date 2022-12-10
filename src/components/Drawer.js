@@ -34,7 +34,7 @@ function Drawer({onClose, onRemove, items = []}) {
     <div className="overlay">
       <div className="drawer">
         <h2 className="mb-4 d-flex justify-content-between">Кошик
-          <img onClick={onClose} src="/img/btn-remove.svg" alt= "Remove"/>
+          <img onClick={onClose} src="img/btn-remove.svg" alt= "Remove"/>
         </h2>
 
         {items.length > 0 ? (
@@ -49,7 +49,7 @@ function Drawer({onClose, onRemove, items = []}) {
                       <p className="mb-0">{obj.name}</p>
                       <b>{obj.price} грн</b>
                     </div>
-                    <img onClick={() => onRemove(obj.id)} className="removeBtn" src="/img/btn-remove.svg" alt= "Remove"/>
+                    <img onClick={() => onRemove(obj.id)} className="removeBtn" src="img/btn-remove.svg" alt= "Remove"/>
                   </div>
                 ))
               }
@@ -65,12 +65,12 @@ function Drawer({onClose, onRemove, items = []}) {
                   <b>{totalPrice} грн.</b>
                 </li>
               </ul>
-              <button onClick={onClickOrder} className="greenButton">Оформити замовлення<img src="/img/arrow.svg" alt="arrow"/></button>
+              <button onClick={onClickOrder} className="greenButton">Оформити замовлення<img src="img/arrow.svg" alt="arrow"/></button>
             </div>
           </div>
         ): (<Info title={isOrderComplete ? "Замовлення оформлено!" : "Кошик пустий"}
                   description={isOrderComplete ? `Ваше замовлення №${orderId} скоро надійде вам на електронну пошту`:"Добавте хоча б одну гру, щоб зробити замовлення"}
-                  image={isOrderComplete ? "/img/complete-order.jpg":"/img/empty-cart.jpg"}/>)}
+                  image={isOrderComplete ? "img/complete-order.jpg":"img/empty-cart.jpg"}/>)}
 
       </div>
       }

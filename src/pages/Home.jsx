@@ -15,7 +15,7 @@ function Home({ items,
       <div className="align-items-center d-flex mb-4 justify-content-between">
         <h1>Всі ігри</h1>
         <div className="search-block">
-          <img src="/img/search.svg" alt="Search"/>
+          <img src="img/search.svg" alt="Search"/>
           <input onChange={onChangeSearchInput} value={searchValue} placeholder="Пошук.."/>
         </div>
       </div>
