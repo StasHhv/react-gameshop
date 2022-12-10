@@ -53,7 +53,7 @@ function App() {
         );
       }
     } catch (error) {
-      alert('Ошибка при добавлении в корзину');
+      alert('Помилка при добавлені в кошик');
       console.error(error);
     }
   };
