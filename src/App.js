@@ -2,8 +2,8 @@ import React from 'react';
 import axios from "axios";
 import Header from "./components/Header";
 import Drawer from "./components/Drawer";
-import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Orders from "./pages/Orders";
 
@@ -40,8 +40,7 @@ function App() {
       } else {
         setCartItems((prev) => [...prev, obj]);
         const { data } = await axios.post('https://636c2fe6ad62451f9fc53f91.mockapi.io/cart/', obj);
-        setCartItems((prev) =>
-          prev.map((item) => {
+        setCartItems((prev) => prev.map((item) => {
             if (item.parentId === data.parentId) {
               return {
                 ...item,
@@ -53,7 +52,7 @@ function App() {
         );
       }
     } catch (error) {
-      alert('Ошибка при добавлении в корзину');
+      alert('Помилка при добавленні в кошик');
       console.error(error);
     }
   };
@@ -85,8 +84,13 @@ function App() {
     return cartItems.some(obj => obj.name === name);
   }
 
+  const isFavorite = (name) => {
+    return favorites.some(obj => obj.name === name);
+  }
+
+
   return (
-    <AppContext.Provider value={{items, cartItems, favorites, isItemAdded, onAddToFavorite, setCartOpened, onAddToCart , setCartItems}}>
+    <AppContext.Provider value={{items, cartItems, favorites, isItemAdded, onAddToFavorite, setCartOpened, onAddToCart , setCartItems, isFavorite}}>
       <div className="wrapper">
         {cartOpened && <Drawer items={cartItems} onClose={() => setCartOpened (false)} onRemove={onRemoveItem}/> }
         <Header onClickCart={() => setCartOpened (true)}  />
@@ -105,7 +109,7 @@ function App() {
             <Favorites/>}
           />
           <Route path="orders" element={
-            <Orders />}
+            <Orders/>}
           />
         </Routes>
 

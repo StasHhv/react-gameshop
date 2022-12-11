@@ -5,10 +5,9 @@ import {AppContext} from "../../App";
 
 
 
-function CardItemComponent({id, name, imgurl, price, onPlus, onFavorite, favorited = false }) {
+function CardItemComponent({id, name, imgurl, price, onPlus, onFavorite}) {
 
-  const {isItemAdded} = React.useContext(AppContext);
-  const [isFavorite, setIsFavorite] = React.useState(favorited);
+  const {isItemAdded, isFavorite} = React.useContext(AppContext);
   const obj = { id, parentId: id, name, imgurl, price };
 
   const onClickPlus = () => {
@@ -16,7 +15,6 @@ function CardItemComponent({id, name, imgurl, price, onPlus, onFavorite, favorit
   };
 
   const onClickFavorite = () => {
-    setIsFavorite(!isFavorite);
     onFavorite(obj);
   };
 
@@ -25,7 +23,7 @@ function CardItemComponent({id, name, imgurl, price, onPlus, onFavorite, favorit
       <div className={styles.card} >
         <Card>
           <div className={styles.favorite}  onClick={onClickFavorite}>
-            {onFavorite && (<img width={60} src={isFavorite ? "img/liked.svg" : "img/unliked.svg"} alt="Unliked"/>)}
+            {onFavorite && (<img width={60} src={isFavorite(name) ? "img/liked.svg" : "img/unliked.svg"} alt="Unliked"/>)}
           </div>
           <Card.Img variant="top" src={imgurl}/>
           <Card.Body>

@@ -32,7 +32,6 @@ function Home({ items,
                 imgurl={item.imgurl}
                 onPlus={(obj) => onAddToCart(obj)}
                 onFavorite={(obj) => onAddToFavorite(obj)}
-
               />
             );
           })}
